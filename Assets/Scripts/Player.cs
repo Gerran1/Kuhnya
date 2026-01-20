@@ -9,10 +9,13 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float rotationSpeed = 10f;
 
+    [SerializeField] private float sprintSpeed = 20f;
+
     [SerializeField] private LayerMask counterMask;
 
     private Vector3 lastInteractionDir;
     public bool IsWalking { get; private set; }
+    public bool IsSprinting { get; private set; }
 
     private void Update()
     {
@@ -23,6 +26,7 @@ public class Player : MonoBehaviour
     private void HandleMovement()
     {
         Vector2 inputVector = gameInput.GetMovementNormalized();
+        Vector2 sprintVector = gameInput.GetSprintNormalized();
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
@@ -32,6 +36,7 @@ public class Player : MonoBehaviour
         bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
 
         IsWalking = moveDir != Vector3.zero;
+        IsSprinting = sprintVector != Vector2.zero;
 
         if (!canMove)
         {
@@ -65,6 +70,11 @@ public class Player : MonoBehaviour
         {
             transform.position += speed * moveDir * Time.deltaTime;
         }
+        if (canMove && sprintVector != Vector2.zero)
+        {
+            transform.position += sprintSpeed * moveDir * Time.deltaTime;
+        }
+        
 
 
         transform.forward = Vector3.Slerp(transform.forward, moveDir, rotationSpeed * Time.deltaTime); //интерпол€ци€, присуща€ 3д объектам; Lerp - интерпол€ци€ между двум€ точками

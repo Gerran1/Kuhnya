@@ -17,4 +17,13 @@ public class GameInput : MonoBehaviour
         inputVector = inputVector.normalized;
         return inputVector;
     }
+
+    public Vector2 GetSprintNormalized()
+    {
+        Vector2 inputVector = inputActions.Player.Sprint.ReadValue<Vector2>();
+
+
+        inputVector = inputVector.normalized;
+        return inputVector;
+    }
 }
