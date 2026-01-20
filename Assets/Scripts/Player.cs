@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float rotationSpeed = 10f;
 
-    [SerializeField] private float sprintSpeed = 20f;
+    [SerializeField] private float sprintSpeed = 4f;
 
     [SerializeField] private LayerMask counterMask;
 
@@ -26,8 +25,8 @@ public class Player : MonoBehaviour
     private void HandleMovement()
     {
         Vector2 inputVector = gameInput.GetMovementNormalized();
-
         float sprint = gameInput.GetSprint();
+
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
@@ -72,7 +71,8 @@ public class Player : MonoBehaviour
         {
             transform.position += speed * moveDir * Time.deltaTime;
         }
-        if (canMove && IsSprinting)
+
+        if (IsWalking && IsSprinting)
         {
             transform.position += sprintSpeed * moveDir * Time.deltaTime;
         }
