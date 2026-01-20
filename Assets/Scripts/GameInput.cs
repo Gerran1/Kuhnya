@@ -18,12 +18,10 @@ public class GameInput : MonoBehaviour
         return inputVector;
     }
 
-    public Vector2 GetSprintNormalized()
+    public float GetSprint()
     {
-        Vector2 inputVector = inputActions.Player.Sprint.ReadValue<Vector2>();
+         float sprint = inputActions.Player.Sprint.ReadValue<float>();
 
-
-        inputVector = inputVector.normalized;
-        return inputVector;
+         return sprint;
     }
 }

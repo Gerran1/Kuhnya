@@ -26,7 +26,8 @@ public class Player : MonoBehaviour
     private void HandleMovement()
     {
         Vector2 inputVector = gameInput.GetMovementNormalized();
-        Vector2 sprintVector = gameInput.GetSprintNormalized();
+
+        float sprint = gameInput.GetSprint();
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
@@ -36,8 +37,9 @@ public class Player : MonoBehaviour
         bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
 
         IsWalking = moveDir != Vector3.zero;
-        IsSprinting = sprintVector != Vector2.zero;
 
+        IsSprinting = sprint != 0f;
+        
         if (!canMove)
         {
             //пробуем движ по x
@@ -70,11 +72,15 @@ public class Player : MonoBehaviour
         {
             transform.position += speed * moveDir * Time.deltaTime;
         }
-        if (canMove && sprintVector != Vector2.zero)
+        if (canMove && IsSprinting)
         {
             transform.position += sprintSpeed * moveDir * Time.deltaTime;
         }
-        
+        if (!IsWalking && IsSprinting)
+        {
+            IsSprinting = false;
+        }
+
 
 
         transform.forward = Vector3.Slerp(transform.forward, moveDir, rotationSpeed * Time.deltaTime); //интерпол€ци€, присуща€ 3д объектам; Lerp - интерпол€ци€ между двум€ точками
