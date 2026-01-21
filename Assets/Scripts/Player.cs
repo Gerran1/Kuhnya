@@ -1,7 +1,26 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance { get; set; }
+    private void Awake()
+    {
+        if(Instance != null)
+        {
+            Debug.LogError("Ќа уровне больше одного игрока(singleton сломалс€)");
+        }
+
+        Instance = this;
+    }
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+
+    public class OnSelectedCounterChangedEventArgs : EventArgs
+    {
+        public ClearCounter selectedCounter;
+    }
+
     [SerializeField] private GameInput gameInput;
 
     [SerializeField] private float speed = 10f;
@@ -11,6 +30,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float sprintSpeed = 4f;
 
     [SerializeField] private LayerMask counterMask;
+
+    private ClearCounter selectedCounter;
 
     private Vector3 lastInteractionDir;
     public bool IsWalking { get; private set; }
@@ -26,7 +47,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         HandleMovement();
-        //HandleInteractions();
+        HandleInteractions();
     }
 
     private void HandleMovement()
@@ -109,29 +130,40 @@ public class Player : MonoBehaviour
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
                 clearCounter.Interact();
+
+                if(clearCounter != selectedCounter)
+                {
+                    SetSelectedCounter(clearCounter);
+                }
+            }
+            else
+            {
+                SetSelectedCounter(null);
             }
         }
-        
+        else
+        {
+            SetSelectedCounter(null);
+        }
+
     }
 
     private void GameInput_OnInteractAction(object sender, System.EventArgs e)
     {
-        Vector2 inputVector = gameInput.GetMovementNormalized();
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-
-        if (moveDir != Vector3.zero)
+        if (selectedCounter != null)
         {
-            lastInteractionDir = moveDir;
+            selectedCounter.Interact();
         }
+    }
 
-        float interactDistance = 2f;
-        if (Physics.Raycast(transform.position, lastInteractionDir, out RaycastHit raycastHit, interactDistance, counterMask))
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
         {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
-                clearCounter.Interact();
-            }
-        }
+            selectedCounter = this.selectedCounter
+        });
     }
 }
 
