@@ -129,7 +129,6 @@ public class Player : MonoBehaviour
         {
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
-                clearCounter.Interact();
 
                 if(clearCounter != selectedCounter)
                 {
@@ -156,9 +155,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void SetSelectedCounter(ClearCounter selectedCounter)
+    private void SetSelectedCounter(ClearCounter clearCounter)
     {
-        this.selectedCounter = selectedCounter;
+        selectedCounter = clearCounter;
 
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
         {
