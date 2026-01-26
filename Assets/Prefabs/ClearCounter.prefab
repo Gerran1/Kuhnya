@@ -33,6 +33,7 @@ Transform:
   m_Children:
   - {fileID: 4327616677370803365}
   - {fileID: 4092558679319309092}
+  - {fileID: 3646306507860142156}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1836697463714431944
@@ -47,6 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49859e90fbec692488efe17f9d95b830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClearCounter
+  tomatoPrafab: {fileID: 4476625028149491034, guid: 089254ca07f4c8447a508a7dcfd4708c, type: 3}
+  counterTopPoint: {fileID: 3646306507860142156}
 --- !u!65 &6620029453285337584
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -68,6 +71,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5578437, y: 1.3663952, z: 1.5335376}
   m_Center: {x: -0.0072985888, y: 0.6408299, z: 0.04223311}
+--- !u!1 &4002348281001313886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3646306507860142156}
+  m_Layer: 6
+  m_Name: CounterTopPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3646306507860142156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4002348281001313886}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.03, y: 1.27, z: -0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5255428622891491448}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &269999887902527502
 PrefabInstance:
   m_ObjectHideFlags: 0
