@@ -4,8 +4,17 @@ using UnityEngine;
 public class CuttingCounter : BaseCounter
 {
     [SerializeField] private CurringRecipeSO[] cutKitchenObjectSOArray;
+    public event EventHandler<OnProgressChangedEventArgs> OnProgressChanged;
+    public class OnProgressChangedEventArgs : EventArgs
+    {
+        public float progressNormalized;
+    }
 
     private int cuttingProgress;
+    /// <summary>
+    /// взятие предметов игроком с cuttingCounter
+    /// </summary>
+    /// <param name="player"></param>
     public override void Interact(Player player)
     {
         if (!HasKitchenObject())
@@ -17,6 +26,11 @@ public class CuttingCounter : BaseCounter
                 {
                     player.GetKitchenObject().SetKitchenObjectParent(this);
                     cuttingProgress = 0;
+
+                    OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs
+                    {
+                        progressNormalized = 0
+                    });
                 }
                 // у игрока есть в руках объект
             }
@@ -36,7 +50,10 @@ public class CuttingCounter : BaseCounter
         }
 
     }
-
+    /// <summary>
+    /// нарезка предметов игроком
+    /// </summary>
+    /// <param name="player"></param>
     public override void InteractAlternate(Player player)
     {
         if (HasKitchenObject() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSO()))
@@ -45,6 +62,10 @@ public class CuttingCounter : BaseCounter
 
             CurringRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
 
+            OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs
+            {
+                progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
+            });
 
             if (cuttingProgress >= cuttingRecipeSO.cuttingProgressMax)
             {
@@ -55,9 +76,6 @@ public class CuttingCounter : BaseCounter
 
                 KitchenObject.SpawnKitchenObject(cutkitchenObjectSO, this);
             }
-            
-
-            
         }
     }
 
@@ -72,7 +90,11 @@ public class CuttingCounter : BaseCounter
         CurringRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(inputKitchenObjectSO);
         return cuttingRecipeSO != null;
     }
-
+    /// <summary>
+    /// принимает объект для нарезки и достаёт из рецепта нарезки
+    /// </summary>
+    /// <param name="inputKitchenObjectSO"> объект для нарезки</param>
+    /// <returns>нарезанная версия</returns>
     private CurringRecipeSO GetCuttingRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO)
     {
         foreach (CurringRecipeSO cuttingRecipeSO in cutKitchenObjectSOArray)
