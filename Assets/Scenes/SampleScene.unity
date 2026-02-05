@@ -1356,9 +1356,11 @@ MonoBehaviour:
   speed: 10
   rotationSpeed: 10
   sprintSpeed: 3
+  dashSpeed: 25
   counterMask:
     serializedVersion: 2
     m_Bits: 64
+  IsDashing: 0
 --- !u!4 &1408769146
 Transform:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     [SerializeField] private float rotationSpeed = 10f;
 
     [SerializeField] private float sprintSpeed = 4f;
+    [SerializeField] private float dashSpeed = 30f;
 
     [SerializeField] private LayerMask counterMask;
 
@@ -40,12 +42,34 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public bool IsWalking { get; private set; }
     public bool IsSprinting { get; private set; }
 
+    public bool IsDashing { get; private set; }
+
     private void Start()
     {
         gameInput.OnInteractAction += GameInput_OnInteractAction;
         gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
+        gameInput.OnDash += GameInput_OnDash;
     }
 
+    private void GameInput_OnDash(object sender, EventArgs e)
+    {
+        if (IsWalking|| IsSprinting)
+        {
+            StartCoroutine(DashCoroutine());
+        }
+
+    }
+    private IEnumerator DashCoroutine()
+    {
+        IsDashing = true;
+        float originalSpeed = speed;
+
+        speed += dashSpeed;
+        yield return new WaitForSeconds(0.1f);
+
+        speed = originalSpeed;
+        IsDashing = false;
+    }
 
     private void Update()
     {

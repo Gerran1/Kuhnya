@@ -5,6 +5,7 @@ public class GameInput : MonoBehaviour
 {
     public event EventHandler OnInteractAction;
     public event EventHandler OnInteractAlternateAction;
+    public event EventHandler OnDash;
     private PlayerInputActions inputActions;
 
     private void Awake()
@@ -14,6 +15,13 @@ public class GameInput : MonoBehaviour
 
         inputActions.Player.Interact.performed += Interact_performed;
         inputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
+        inputActions.Player.Dash.started += Dash_started;
+
+    }
+
+    private void Dash_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnDash?.Invoke(this, EventArgs.Empty);
     }
 
     private void InteractAlternate_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -40,5 +48,12 @@ public class GameInput : MonoBehaviour
          float sprint = inputActions.Player.Sprint.ReadValue<float>();
 
          return sprint;
+    }
+
+    public float GetDash()
+    {
+        float dash = inputActions.Player.Dash.ReadValue<float>();
+
+        return dash;
     }
 }
