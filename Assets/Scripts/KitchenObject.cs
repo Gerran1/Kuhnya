@@ -50,4 +50,18 @@ public class KitchenObject : MonoBehaviour
 
         return kitchenObject;
     }
+
+    public bool TryGetPlate(out PlateKithcenObject plateKithcenObject)
+    {
+        if (this is PlateKithcenObject)
+        {
+            plateKithcenObject = this as PlateKithcenObject;
+            return true;
+        }
+        else
+        {
+            plateKithcenObject = null;
+            return false;
+        }
+    }
 }

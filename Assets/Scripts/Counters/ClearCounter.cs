@@ -12,16 +12,25 @@ public class ClearCounter : BaseCounter, IKitchenObjectParent
             //не тумбе ничего не лежит
             if (player.HasKitchenObject())
             {
-                // у игрока есть в руках объект
+                //у игрока есть в руках объект кладём на тумбу
                 player.GetKitchenObject().SetKitchenObjectParent(this);
             }
         }
         else
         {
-            //на тумбе уже лежит объект
+            //у игрока есть объект
             if (player.HasKitchenObject())
             {
-                //у игрока уже есть объект в руках
+                //у игрока уже есть объект в руках и это тарелка
+                if (player.GetKitchenObject().TryGetPlate(out PlateKithcenObject plateKithcenObject))
+                {
+                    //игрок держит тарелку
+                    if(plateKithcenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                    {
+                        GetKitchenObject().DestroySelf();
+                    }
+                    
+                }
             }
             else
             {
