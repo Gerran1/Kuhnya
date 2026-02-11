@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: burningRecipeSOArray.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5329216074349118212, guid: baf79c789b0201a4790766c75f373537, type: 3}
+      propertyPath: mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7423657935849915727, guid: baf79c789b0201a4790766c75f373537, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.99
@@ -613,7 +617,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2141296299421693151, guid: 03c8fc35549a47f48bc865203ad7e46b, type: 3}
       propertyPath: mode
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7623100857664390279, guid: 03c8fc35549a47f48bc865203ad7e46b, type: 3}
       propertyPath: m_LocalPosition.x
