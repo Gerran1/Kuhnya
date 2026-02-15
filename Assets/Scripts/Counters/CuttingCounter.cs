@@ -5,12 +5,14 @@ public class CuttingCounter : BaseCounter, IHasProgress
 {
     [SerializeField] private CurringRecipeSO[] cutKitchenObjectSOArray;
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+
     public class OnProgressChangedEventArgs : EventArgs
     {
         public float progressNormalized;
     }
 
     private int cuttingProgress;
+
     /// <summary>
     /// взятие предметов игроком с cuttingCounter
     /// </summary>
@@ -48,8 +50,8 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 GetKitchenObject().SetKitchenObjectParent(player);
             }
         }
-
     }
+
     /// <summary>
     /// нарезка предметов игроком
     /// </summary>
@@ -90,6 +92,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
         CurringRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(inputKitchenObjectSO);
         return cuttingRecipeSO != null;
     }
+
     /// <summary>
     /// принимает объект для нарезки и достаёт из рецепта нарезки
     /// </summary>
