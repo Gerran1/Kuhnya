@@ -5,6 +5,10 @@ public class CuttingCounter : BaseCounter, IHasProgress
 {
     [SerializeField] private CurringRecipeSO[] cutKitchenObjectSOArray;
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+    public static event EventHandler OnAnyCut;
+
+    //public static CuttingCounter Instance { get; private set; }
+
 
     public class OnProgressChangedEventArgs : EventArgs
     {
@@ -12,6 +16,17 @@ public class CuttingCounter : BaseCounter, IHasProgress
     }
 
     private int cuttingProgress;
+
+    //private void Awake()
+    //{
+    //    if (Instance = this){
+    //        Instance = this;
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("Больше одного CuttingCouner!");
+    //    }
+    //}
 
     /// <summary>
     /// взятие предметов игроком с cuttingCounter
@@ -61,6 +76,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
         if (HasKitchenObject() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSO()))
         {
             cuttingProgress++;
+            OnAnyCut?.Invoke(this, EventArgs.Empty);
 
             CurringRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
 
