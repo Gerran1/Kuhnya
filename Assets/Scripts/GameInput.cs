@@ -3,20 +3,47 @@ using UnityEngine;
 
 public class GameInput : MonoBehaviour
 {
+    public static GameInput Instance {  get; private set; }
+
     public event EventHandler OnInteractAction;
     public event EventHandler OnInteractAlternateAction;
     public event EventHandler OnDash;
+    public event EventHandler OnPauseAction;
     private PlayerInputActions inputActions;
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogError("Больше одного GameInput!");
+        }
+
         inputActions = new PlayerInputActions();
         inputActions.Player.Enable();
 
         inputActions.Player.Interact.performed += Interact_performed;
         inputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
         inputActions.Player.Dash.started += Dash_started;
+        inputActions.Player.Pause.performed += Pause_performed;
+    }
 
+    private void OnDestroy()
+    {
+        inputActions.Player.Interact.performed -= Interact_performed;
+        inputActions.Player.InteractAlternate.performed -= InteractAlternate_performed;
+        inputActions.Player.Dash.started -= Dash_started;
+        inputActions.Player.Pause.performed -= Pause_performed;
+
+        inputActions.Dispose();
+    }
+
+    private void Pause_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnPauseAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void Dash_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
